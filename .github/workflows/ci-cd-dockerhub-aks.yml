@@ -149,6 +149,13 @@ jobs:
           echo "Ensuring namespace exists: ${{ env.DOCKERHUB_USERNAME }}"
           kubectl get namespace "${{ env.DOCKERHUB_USERNAME }}" >/dev/null 2>&1 || \
             kubectl create namespace "${{ env.DOCKERHUB_USERNAME}}"
+          kubectl create secret generic pg-credentials \
+          --from-literal=PGHOST="${{ secrets.PGHOST }}" \
+          --from-literal=PGUSER="${{ secrets.PGUSER }}" \
+          --from-literal=PGPASSWORD="${{ secrets.PGPASSWORD }}" \
+          --namespace "${{ env.DOCKERHUB_USERNAME }}" \
+          --dry-run=client -o yaml | kubectl apply -f -
+
       - name: Deploy all k8s manifests
         run: |
           set -euo pipefail
