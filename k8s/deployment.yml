@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: pgmicroservice
-          image: fchmim/pgmicroservice:latest
+          image: fchmim/fchmim:latest
           ports:
             - containerPort: 3000
           env:
